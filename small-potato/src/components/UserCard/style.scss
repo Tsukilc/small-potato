@@ -1,0 +1,104 @@
+.user-card {
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+  
+  .user-card-content {
+    display: flex;
+    align-items: center;
+    position: relative;
+    
+    .user-avatar {
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+    
+    .user-info {
+      flex: 1;
+      overflow: hidden;
+      
+      .nickname {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #333;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .username {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 8px;
+      }
+      
+      .bio {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .user-stats {
+        display: flex;
+        font-size: 13px;
+        color: #666;
+        
+        .stat-item {
+          margin-right: 12px;
+          
+          strong {
+            color: #333;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+    
+    .follow-button {
+      margin-left: 12px;
+      flex-shrink: 0;
+      
+      &.ant-btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+    }
+  }
+  
+  // 响应式调整
+  @media (max-width: 576px) {
+    .user-card-content {
+      flex-direction: column;
+      text-align: center;
+      
+      .user-avatar {
+        margin-right: 0;
+        margin-bottom: 12px;
+      }
+      
+      .user-info {
+        width: 100%;
+        margin-bottom: 12px;
+        
+        .user-stats {
+          justify-content: center;
+        }
+      }
+      
+      .follow-button {
+        margin-left: 0;
+      }
+    }
+  }
+} 

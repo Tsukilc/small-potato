@@ -1,0 +1,147 @@
+.app-header {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  padding: 0;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  height: var(--header-height);
+  
+  .header-wrapper {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 15px;
+  }
+
+  // Logo样式
+  .logo {
+    margin-right: 25px;
+    
+    a {
+      display: flex;
+      align-items: center;
+      
+      img {
+        height: 30px;
+        margin-right: 8px;
+      }
+      
+      span {
+        font-size: 18px;
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+    }
+  }
+
+  // 主菜单样式
+  .main-menu {
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    border-bottom: none;
+    margin-right: 20px;
+    
+    .ant-menu-item {
+      font-size: 16px;
+      
+      &:hover, &.ant-menu-item-selected {
+        color: var(--primary-color);
+      }
+      
+      &.ant-menu-item-selected::after {
+        border-bottom-color: var(--primary-color);
+      }
+    }
+  }
+
+  // 搜索框样式
+  .search-box {
+    flex: 1;
+    max-width: 360px;
+    margin: 0 auto;
+    line-height: 50%;
+    
+    .search-input {
+      border-radius: 20px;
+      
+      .ant-input {
+        border-radius: 20px;
+        padding-left: 15px;
+      }
+      
+      .ant-btn {
+        border-radius: 0 20px 20px 0;
+      }
+    }
+  }
+
+  // 右侧功能区样式
+  .header-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    
+    .publish-btn {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      margin-right: 15px;
+      
+      &:hover, &:focus {
+        background-color: lighten(#ff2442, 5%);
+        border-color: lighten(#ff2442, 5%);
+      }
+    }
+    
+    .notification-btn {
+      margin-right: 15px;
+      font-size: 18px;
+    }
+    
+    .user-avatar {
+      cursor: pointer;
+      
+      .ant-avatar {
+        transition: transform 0.2s;
+        
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+}
+
+// 响应式调整
+@media (max-width: 768px) {
+  .app-header {
+    .logo span {
+      display: none;
+    }
+    
+    .main-menu {
+      margin-right: 10px;
+    }
+    
+    .search-box {
+      max-width: 200px;
+    }
+    
+    .publish-btn {
+      .anticon + span {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .app-header {
+    .search-box {
+      display: none;
+    }
+  }
+} 

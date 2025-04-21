@@ -1,0 +1,101 @@
+.search-page {
+  padding: 24px;
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 64px);
+  
+  // 搜索头部
+  .search-header {
+    margin-bottom: 24px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    .ant-input-search {
+      .ant-input-wrapper {
+        .ant-input {
+          height: 50px;
+          font-size: 16px;
+        }
+        
+        .ant-input-search-button {
+          height: 50px;
+          background-color: var(--primary-color);
+          border-color: var(--primary-color);
+          
+          &:hover {
+            background-color: lighten(#ff2442, 5%);
+            border-color: lighten(#ff2442, 5%);
+          }
+        }
+      }
+    }
+  }
+  
+  // 空搜索状态
+  .empty-search {
+    text-align: center;
+    padding: 60px 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  // 骨架屏卡片
+  .skeleton-card {
+    margin-bottom: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  // 搜索结果区域
+  .search-results {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    
+    // 搜索标签页
+    .search-tabs {
+      .ant-tabs-nav {
+        margin-bottom: 20px;
+        
+        .ant-tabs-tab {
+          font-size: 16px;
+          padding: 12px 16px;
+          
+          .anticon {
+            margin-right: 8px;
+          }
+        }
+        
+        .ant-tabs-tab-active .ant-tabs-tab-btn {
+          color: var(--primary-color);
+        }
+        
+        .ant-tabs-ink-bar {
+          background-color: var(--primary-color);
+        }
+      }
+    }
+    
+    // 分页容器
+    .pagination-container {
+      margin-top: 24px;
+      text-align: center;
+    }
+    
+    // 空结果
+    .ant-empty {
+      padding: 60px 0;
+    }
+  }
+  
+  // 响应式调整
+  @media (max-width: 768px) {
+    padding: 16px;
+    
+    .search-header {
+      margin-bottom: 16px;
+    }
+  }
+} 

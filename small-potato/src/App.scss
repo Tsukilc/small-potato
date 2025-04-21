@@ -1,0 +1,30 @@
+// 全局加载样式
+.page-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  
+  .ant-spin {
+    color: var(--primary-color);
+  }
+}
+
+// 页面过渡动画
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+} 

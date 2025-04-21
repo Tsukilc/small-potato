@@ -1,0 +1,86 @@
+.main-layout {
+  min-height: 100vh;
+  
+  // 主内容区样式
+  .main-content {
+    padding-top: var(--header-height);
+    min-height: calc(100vh - 64px - 70px); // 减去头部和页脚高度
+    
+    .content-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 15px;
+    }
+  }
+  
+  // 页脚样式
+  .main-footer {
+    text-align: center;
+    background-color: #f7f7f7;
+    padding: 20px;
+    height: 70px;
+    
+    .footer-links {
+      margin-bottom: 10px;
+      
+      a {
+        margin: 0 10px;
+        color: #666;
+        
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+    }
+    
+    .footer-copyright {
+      color: #999;
+      font-size: 12px;
+    }
+  }
+}
+
+// 回到顶部样式
+.ant-back-top {
+  right: 50px;
+  bottom: 50px;
+  
+  .ant-back-top-content {
+    background-color: var(--primary-color);
+    opacity: 0.8;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// 响应式调整
+@media (max-width: 768px) {
+  .main-layout {
+    .main-content {
+      .content-wrapper {
+        padding: 15px 10px;
+      }
+    }
+    
+    .main-footer {
+      padding: 15px;
+      
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        
+        a {
+          margin: 0 8px 8px;
+        }
+      }
+    }
+  }
+  
+  .ant-back-top {
+    right: 20px;
+    bottom: 20px;
+  }
+} 
