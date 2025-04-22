@@ -1,9 +1,59 @@
 .main-layout {
   min-height: 100vh;
   
+  // 主内容区和侧边栏的布局容器
+  .site-layout {
+    padding-top: var(--header-height, 64px);
+    display: flex;
+  }
+  
+  // 侧边栏样式
+  .site-sidebar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: fixed;
+    height: calc(100vh - var(--header-height, 64px));
+    z-index: 5;
+    left: 0;
+    top: var(--header-height, 64px);
+    overflow-y: auto;
+    
+    .sidebar-menu {
+      border-right: none;
+      
+      .ant-menu-item {
+        margin: 10px 0;
+        border-radius: 0 20px 20px 0;
+        transition: all 0.3s;
+        font-size: 15px;
+        
+        &:hover {
+          color: var(--primary-color, #ff2442);
+          background-color: rgba(255, 36, 66, 0.05);
+        }
+        
+        &.ant-menu-item-selected {
+          color: var(--primary-color, #ff2442);
+          background-color: rgba(255, 36, 66, 0.1);
+          border-left: 3px solid var(--primary-color, #ff2442);
+          font-weight: 500;
+          
+          &::after {
+            display: none;
+          }
+        }
+      }
+      
+      .ant-menu-item-icon {
+        font-size: 18px;
+      }
+    }
+  }
+  
   // 主内容区样式
   .main-content {
-    padding-top: var(--header-height);
+    margin-left: 200px;
+    width: calc(100% - 200px);
     min-height: calc(100vh - 64px - 70px); // 减去头部和页脚高度
     
     .content-wrapper {
@@ -19,6 +69,8 @@
     background-color: #f7f7f7;
     padding: 20px;
     height: 70px;
+    margin-left: 200px;
+    width: calc(100% - 200px);
     
     .footer-links {
       margin-bottom: 10px;
@@ -28,7 +80,7 @@
         color: #666;
         
         &:hover {
-          color: var(--primary-color);
+          color: var(--primary-color, #ff2442);
         }
       }
     }
@@ -46,7 +98,7 @@
   bottom: 50px;
   
   .ant-back-top-content {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color, #ff2442);
     opacity: 0.8;
     
     &:hover {
@@ -56,15 +108,20 @@
 }
 
 // 响应式调整
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .main-layout {
     .main-content {
+      margin-left: 0;
+      width: 100%;
+      
       .content-wrapper {
         padding: 15px 10px;
       }
     }
     
     .main-footer {
+      margin-left: 0;
+      width: 100%;
       padding: 15px;
       
       .footer-links {

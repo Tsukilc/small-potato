@@ -90,7 +90,7 @@ const Home: React.FC = () => {
   return (
     <div className="home-page">
       {/* 页面标题 */}
-      <h1 className="page-title">探索精彩内容</h1>
+
 
       {/* 分类标签页 */}
       <Tabs 
