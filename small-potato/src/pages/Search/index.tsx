@@ -96,7 +96,7 @@ const Search: React.FC = () => {
   return (
     <div className="search-page">
       {/* 搜索框 */}
-      <div className="search-header">
+      {/* <div className="search-header">
         <SearchInput
           placeholder="搜索笔记、用户、标签"
           allowClear
@@ -107,7 +107,7 @@ const Search: React.FC = () => {
           onSearch={handleSearch}
           prefix={<SearchOutlined />}
         />
-      </div>
+      </div> */}
       
       {/* 没有关键词情况 */}
       {!keyword && (

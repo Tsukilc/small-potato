@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Avatar, Button, message, Modal, Image } from 'antd';
+import { Card, Avatar, Button, Modal, Image, App } from 'antd';
 import { 
   HeartOutlined, 
   HeartFilled, 
@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 import { Note } from '../../api/note';
 import { likeNote, unlikeNote, collectNote, uncollectNote } from '../../api/note';
+import { getFullResourceUrl } from '../../api/request';
 import useUserStore from '../../stores/userStore';
 import './style.scss';
 
@@ -31,6 +32,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onLikeChange, onCollectChange
   const [collectCount, setCollectCount] = useState(note.collectCount);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
+  const { message } = App.useApp();
 
   // 处理点赞/取消点赞
   const handleLikeClick = async (e: React.MouseEvent) => {
@@ -109,32 +111,47 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onLikeChange, onCollectChange
     }
 
     if (note.images.length === 1) {
+      console.info("note.images[0]", note.images[0]);
+      const imageUrl = getFullResourceUrl(note.images[0]);
       return (
         <div 
           className="note-single-image" 
-          onClick={(e) => handlePreview(e, note.images[0])}
+          onClick={(e) => handlePreview(e, imageUrl)}
         >
-          <img src={note.images[0]} alt="笔记图片" />
+          <img src={imageUrl} alt="笔记图片" onError={(e) => {
+            console.error("图片加载错误:", imageUrl);
+            e.currentTarget.src = 'https://via.placeholder.com/300x200?text=图片加载错误';
+          }} />
         </div>
       );
     }
 
     return (
       <div className="note-image-grid">
-        {note.images.slice(0, 4).map((image, index) => (
-          <div 
-            key={index} 
-            className="note-grid-item"
-            onClick={(e) => handlePreview(e, image)}
-          >
-            <img src={image} alt={`笔记图片 ${index}`} />
-            {index === 3 && note.images.length > 4 && (
-              <div className="more-images">
-                <span>+{note.images.length - 4}</span>
-              </div>
-            )}
-          </div>
-        ))}
+        {note.images.slice(0, 4).map((image, index) => {
+          const imageUrl = getFullResourceUrl(image);
+          return (
+            <div 
+              key={index} 
+              className="note-grid-item"
+              onClick={(e) => handlePreview(e, imageUrl)}
+            >
+              <img 
+                src={imageUrl} 
+                alt={`笔记图片 ${index}`} 
+                onError={(e) => {
+                  console.error("图片加载错误:", imageUrl);
+                  e.currentTarget.src = 'https://via.placeholder.com/300x200?text=图片加载错误';
+                }} 
+              />
+              {index === 3 && note.images.length > 4 && (
+                <div className="more-images">
+                  <span>+{note.images.length - 4}</span>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -160,7 +177,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onLikeChange, onCollectChange
         
         {/* 用户信息区域 */}
         <div className="note-user" onClick={goToUserProfile}>
-          <Avatar src={note.avatar} size="small" />
+          <Avatar src={getFullResourceUrl(note.avatar)} size="small" />
           <span className="username">{note.username}</span>
         </div>
         
@@ -220,7 +237,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note, onLikeChange, onCollectChange
         onCancel={() => setPreviewVisible(false)}
         className="image-preview-modal"
       >
-        <img src={previewImage} alt="预览图片" style={{ width: '100%' }} />
+        <img src={getFullResourceUrl(previewImage)} alt="预览图片" style={{ width: '100%' }} />
       </Modal>
     </>
   );

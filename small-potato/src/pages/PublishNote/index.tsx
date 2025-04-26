@@ -4,14 +4,15 @@ import {
   Form, 
   Input, 
   Button, 
-  message, 
   Upload, 
   Card, 
   Tag, 
   Space, 
   Modal,
   Tooltip,
-  Divider
+  Divider,
+  Spin,
+  App
 } from 'antd';
 import { 
   PictureOutlined, 
@@ -23,6 +24,7 @@ import {
 } from '@ant-design/icons';
 import type { RcFile, UploadProps, UploadFile } from 'antd/es/upload';
 import { createNote, uploadNoteImage } from '../../api/note';
+import { getFullResourceUrl } from '../../api/request';
 import useUserStore from '../../stores/userStore';
 import './style.scss';
 
@@ -46,6 +48,9 @@ const NotePreview: React.FC<PreviewProps> = ({
   tags, 
   onClose 
 }) => {
+  // 转换图片URL为完整路径
+  const processedImages = images.map(img => getFullResourceUrl(img));
+  
   return (
     <Modal
       title="笔记预览"
@@ -59,9 +64,9 @@ const NotePreview: React.FC<PreviewProps> = ({
       <div className="note-preview">
         <h2 className="preview-title">{title || '无标题'}</h2>
         
-        {images.length > 0 && (
+        {processedImages.length > 0 && (
           <div className="preview-images">
-            {images.map((img, index) => (
+            {processedImages.map((img, index) => (
               <div key={index} className="preview-image-item">
                 <img src={img} alt={`图片 ${index}`} />
               </div>
@@ -87,6 +92,9 @@ const NotePreview: React.FC<PreviewProps> = ({
 
 // 发布笔记页面组件
 const PublishNote: React.FC = () => {
+  // 使用App.useApp()获取消息API
+  const { message, modal, notification } = App.useApp();
+  
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { isLoggedIn, userInfo } = useUserStore();
@@ -97,6 +105,7 @@ const PublishNote: React.FC = () => {
   const [inputTagVisible, setInputTagVisible] = useState(false);
   const [tagInputValue, setTagInputValue] = useState('');
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   // 检查登录状态
   useEffect(() => {
@@ -104,7 +113,7 @@ const PublishNote: React.FC = () => {
       message.warning('请先登录再发布笔记');
       navigate('/login');
     }
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn, navigate, message]);
 
   // 处理图片上传前校验
   const beforeUpload = (file: RcFile) => {
@@ -127,17 +136,29 @@ const PublishNote: React.FC = () => {
 
   // 自定义上传图片
   const customUpload = async (options: any) => {
-    const { file, onSuccess, onError } = options;
+    const { file, onSuccess, onError, onProgress } = options;
+    setUploading(true);
     
     try {
+      // 显示上传进度
+      onProgress({ percent: 50 });
+      
+      // 使用新的上传方法
       const result = await uploadNoteImage(file);
+      
+      onProgress({ percent: 100 });
       onSuccess(result, file);
       
       // 添加到已上传图片列表
       setUploadedImages(prev => [...prev, result.url]);
+      message.success('图片上传成功');
     } catch (error) {
+      console.error('上传失败:', error);
       onError(error);
       message.error('图片上传失败，请重试');
+
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -183,26 +204,42 @@ const PublishNote: React.FC = () => {
     setPreviewVisible(true);
   };
 
+  // 手动触发表单提交
+  const triggerSubmit = () => {
+    form.submit();
+  };
+
   // 提交笔记
   const handleSubmit = async (values: any) => {
-    if (uploadedImages.length === 0) {
-      return message.warning('请至少上传一张图片');
-    }
+    console.log('表单提交值:', values);
+    console.log('上传的图片:', uploadedImages);
+    
+    // 需要在上边弹出提示提示
+    // if (uploadedImages.length === 0) {
+    //   message.warning('请至少上传一张图片');
+    //   return;
+    // }
 
     setLoading(true);
     try {
-      await createNote({
+      console.log('正在调用createNote API...');
+      
+      const noteData = {
         title: values.title,
         content: values.content,
         images: uploadedImages,
         tags
-      });
+      };
+      
+      console.log('发送的数据:', noteData);
+      
+      const result = await createNote(noteData);
       
       message.success('笔记发布成功');
       navigate('/');
     } catch (error) {
-      message.error('发布失败，请重试');
       console.error('发布笔记失败:', error);
+      message.error('发布失败，请重试');
     } finally {
       setLoading(false);
     }
@@ -248,7 +285,7 @@ const PublishNote: React.FC = () => {
             >
               {fileList.length >= 9 ? null : (
                 <div>
-                  <PlusOutlined />
+                  {uploading ? <Spin /> : <PlusOutlined />}
                   <div style={{ marginTop: 8 }}>上传图片</div>
                 </div>
               )}
@@ -324,10 +361,11 @@ const PublishNote: React.FC = () => {
                   预览笔记
                 </Button>
                 <Button 
-                  type="primary" 
-                  htmlType="submit" 
+                  type="primary"
+                  onClick={triggerSubmit}
                   loading={loading}
                   icon={<PlusOutlined />}
+                  disabled={uploading}
                 >
                   发布笔记
                 </Button>

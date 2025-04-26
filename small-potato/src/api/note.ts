@@ -60,6 +60,21 @@ export interface CommentPaginationResult {
   pageSize: number;
 }
 
+// MinIO上传URL响应
+export interface UploadUrlResponse {
+  uploadUrl: string;
+  fileUrl: string;
+  fileName: string;
+}
+
+// 上传完成回调参数
+export interface UploadCallbackParams {
+  fileName: string;
+  fileUrl: string;
+  fileSize: number;
+  fileType: string;
+}
+
 // 获取笔记列表
 export function getNoteList(params: NoteQueryParams) {
   return get<NotePaginationResult>('/notes', params);
@@ -95,11 +110,72 @@ export function deleteNote(id: string) {
   return del(`/notes/${id}`);
 }
 
-// 上传笔记图片
-export function uploadNoteImage(file: File) {
-  const formData = new FormData();
-  formData.append('file', file);
-  return upload<{ url: string }>('/upload/note-image', formData);
+// 获取MinIO上传URL
+export function getUploadUrl(fileInfo: {
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  category?: string;
+}) {
+  return post<UploadUrlResponse>('/file/upload/get-url', {
+    ...fileInfo
+  });
+}
+
+// 上传文件到MinIO
+export async function uploadFileToMinIO(uploadUrl: string, file: File) {
+  try {
+    const response = await fetch(uploadUrl, {
+      method: 'PUT',
+      body: file,
+      headers: {
+        'Content-Type': file.type
+      }
+    });
+    
+    if (response.ok) {
+      return true;
+    }
+    throw new Error('上传到MinIO失败');
+  } catch (error) {
+    console.error('文件上传错误:', error);
+    throw error;
+  }
+}
+
+// 上传完成回调
+export function uploadCallback(params: UploadCallbackParams) {
+  return post('/file/upload/callback', params);
+}
+
+// 上传笔记图片 (完整流程)
+export async function uploadNoteImage(file: File) {
+  try {
+    // 1. 从后端获取上传URL
+    const uploadUrlData = await getUploadUrl({
+      fileName: file.name,
+      fileType: file.type,
+      fileSize: file.size,
+      category: 'note'  // 分类为笔记图片
+    });
+    
+    // 2. 上传文件到MinIO
+    await uploadFileToMinIO(uploadUrlData.uploadUrl, file);
+    
+    // 3. 上传完成后回调通知后端
+    await uploadCallback({
+      fileName: uploadUrlData.fileName,
+      fileUrl: uploadUrlData.fileUrl,
+      fileSize: file.size,
+      fileType: file.type
+    });
+    
+    // 4. 返回文件的访问URL
+    return { url: uploadUrlData.fileUrl };
+  } catch (error) {
+    console.error('笔记图片上传失败:', error);
+    throw error;
+  }
 }
 
 // 点赞笔记

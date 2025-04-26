@@ -106,7 +106,7 @@ const AppHeader: React.FC = () => {
           </Link>
         </div>
 
-        {/* 主导航
+        
         <Menu
           mode="horizontal"
           selectedKeys={[current]}
@@ -124,7 +124,7 @@ const AppHeader: React.FC = () => {
               label: '发现'
             }
           ]}
-        /> */}
+        />
 
         {/* 搜索框 */}
         <div className="search-box">
