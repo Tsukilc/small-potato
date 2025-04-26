@@ -53,21 +53,21 @@ const MainLayout: React.FC = () => {
             onClick={handleMenuClick}
             className="sidebar-menu"
             items={[
-              {
-                key: '/',
-                icon: <HomeOutlined />,
-                label: '首页'
-              },
-              {
-                key: '/explore',
-                icon: <CompassOutlined />,
-                label: '发现'
-              },
-              {
-                key: '/hot',
-                icon: <FireOutlined />,
-                label: '热门'
-              },
+              // {
+              //   key: '/',
+              //   icon: <HomeOutlined />,
+              //   label: '首页'
+              // },
+              // {
+              //   key: '/explore',
+              //   icon: <CompassOutlined />,
+              //   label: '发现'
+              // },
+              // {
+              //   key: '/hot',
+              //   icon: <FireOutlined />,
+              //   label: '热门'
+              // },
               {
                 type: 'divider'
               },

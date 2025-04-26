@@ -65,6 +65,7 @@ export interface UploadUrlResponse {
   uploadUrl: string;
   fileUrl: string;
   fileName: string;
+  filePath: string;
 }
 
 // 上传完成回调参数
@@ -73,6 +74,9 @@ export interface UploadCallbackParams {
   fileUrl: string;
   fileSize: number;
   fileType: string;
+  filePath: string;
+  originalFileName: string;
+  category: string;
 }
 
 // 获取笔记列表
@@ -167,7 +171,10 @@ export async function uploadNoteImage(file: File) {
       fileName: uploadUrlData.fileName,
       fileUrl: uploadUrlData.fileUrl,
       fileSize: file.size,
-      fileType: file.type
+      fileType: file.type,
+      filePath: uploadUrlData.filePath,
+      originalFileName: file.name,
+      category: 'note',
     });
     
     // 4. 返回文件的访问URL
