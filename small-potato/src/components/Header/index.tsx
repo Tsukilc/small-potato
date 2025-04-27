@@ -68,16 +68,16 @@ const AppHeader: React.FC = () => {
       label: <Link to={`/user/${userInfo?.id}`}>个人主页</Link>,
       icon: <UserOutlined />
     },
-    {
-      key: '2',
-      label: <Link to="/user/likes">我的点赞</Link>,
-      icon: <HeartOutlined />
-    },
-    {
-      key: '3',
-      label: <Link to="/user/collections">我的收藏</Link>,
-      icon: <StarOutlined />
-    },
+    // {
+    //   key: '2',
+    //   label: <Link to="/user/likes">我的点赞</Link>,
+    //   icon: <HeartOutlined />
+    // },
+    // {
+    //   key: '3',
+    //   label: <Link to="/user/collections">我的收藏</Link>,
+    //   icon: <StarOutlined />
+    // },
     {
       key: 'divider',
       type: 'divider'
@@ -113,16 +113,16 @@ const AppHeader: React.FC = () => {
           onClick={handleMenuClick}
           className="main-menu"
           items={[
-            {
-              key: '/',
-              icon: <HomeOutlined />,
-              label: '首页'
-            },
-            {
-              key: '/explore',
-              icon: <CompassOutlined />,
-              label: '发现'
-            }
+            // {
+            //   key: '/',
+            //   icon: <HomeOutlined />,
+            //   label: '首页'
+            // },
+            // {
+            //   key: '/explore',
+            //   icon: <CompassOutlined />,
+            //   label: '发现'
+            // }
           ]}
         />
 

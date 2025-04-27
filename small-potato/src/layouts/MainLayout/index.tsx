@@ -53,16 +53,16 @@ const MainLayout: React.FC = () => {
             onClick={handleMenuClick}
             className="sidebar-menu"
             items={[
-              // {
-              //   key: '/',
-              //   icon: <HomeOutlined />,
-              //   label: '首页'
-              // },
-              // {
-              //   key: '/explore',
-              //   icon: <CompassOutlined />,
-              //   label: '发现'
-              // },
+              {
+                key: '/',
+                icon: <HomeOutlined />,
+                label: '首页'
+              },
+              {
+                key: '/explore',
+                icon: <CompassOutlined />,
+                label: '发现'
+              },
               // {
               //   key: '/hot',
               //   icon: <FireOutlined />,
@@ -72,31 +72,31 @@ const MainLayout: React.FC = () => {
                 type: 'divider'
               },
               ...(true ? [
-                {
-                  key: `/user/${userInfo?.id}`,
-                  icon: <UserOutlined />,
-                  label: '个人主页'
-                },
+                // {
+                //   key: `/user/${userInfo?.id}`,
+                //   icon: <UserOutlined />,
+                //   label: '个人主页'
+                // },
                 {
                   key: '/publish',
                   icon: <EditOutlined />,
                   label: '发布笔记'
                 },
-                {
-                  key: '/user/notes',
-                  icon: <BookOutlined />,
-                  label: '我的笔记'
-                },
-                {
-                  key: '/user/likes',
-                  icon: <HeartOutlined />,
-                  label: '我的点赞'
-                },
-                {
-                  key: '/user/collections',
-                  icon: <StarOutlined />,
-                  label: '我的收藏'
-                },
+                // {
+                //   key: '/user/notes',
+                //   icon: <BookOutlined />,
+                //   label: '我的笔记'
+                // },
+                // {
+                //   key: '/user/likes',
+                //   icon: <HeartOutlined />,
+                //   label: '我的点赞'
+                // },
+                // {
+                //   key: '/user/collections',
+                //   icon: <StarOutlined />,
+                //   label: '我的收藏'
+                // },
                 {
                   key: '/settings',
                   icon: <SettingOutlined />,
