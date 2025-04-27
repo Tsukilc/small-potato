@@ -31,8 +31,7 @@ const useUserStore = create<UserState>((set, get) => ({
   login: async (username: string, password: string) => {
     set({ loading: true });
     try {
-      const res = await loginApi({ username, password });
-      // 保存token到本地
+      const res = await loginApi({ username, password });   // 保存token到本地
       localStorage.setItem('token', res.token);
       set({ 
         userInfo: res.userInfo, 

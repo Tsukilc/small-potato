@@ -248,4 +248,9 @@ export function reportNote(noteId: string, reason: string) {
 // 分享笔记计数接口
 export function shareNote(noteId: string, platform: string) {
   return post(`/notes/${noteId}/share`, { platform });
+}
+
+// 获取热门标签
+export function getHotTags(limit?: number) {
+  return get<string[]>('/notes/hot-tags', { limit });
 } 

@@ -20,10 +20,11 @@ import {
   DeleteOutlined, 
   EyeOutlined,
   TagOutlined,
-  SmileOutlined
+  SmileOutlined,
+  FireOutlined
 } from '@ant-design/icons';
 import type { RcFile, UploadProps, UploadFile } from 'antd/es/upload';
-import { createNote, uploadNoteImage } from '../../api/note';
+import { createNote, uploadNoteImage, getHotTags } from '../../api/note';
 import { getFullResourceUrl } from '../../api/request';
 import useUserStore from '../../stores/userStore';
 import './style.scss';
@@ -106,6 +107,8 @@ const PublishNote: React.FC = () => {
   const [tagInputValue, setTagInputValue] = useState('');
   const [previewVisible, setPreviewVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [hotTags, setHotTags] = useState<string[]>([]);
+  const [hotTagsLoading, setHotTagsLoading] = useState(false);
 
   // 检查登录状态
   useEffect(() => {
@@ -114,6 +117,24 @@ const PublishNote: React.FC = () => {
       navigate('/login');
     }
   }, [isLoggedIn, navigate, message]);
+
+  // 获取热门标签
+  useEffect(() => {
+    const fetchHotTags = async () => {
+      setHotTagsLoading(true);
+      try {
+        const result = await getHotTags(10);
+        setHotTags(result);
+      } catch (error) {
+        console.error('获取热门标签失败:', error);
+        message.error('获取热门标签失败');
+      } finally {
+        setHotTagsLoading(false);
+      }
+    };
+
+    fetchHotTags();
+  }, [message]);
 
   // 处理图片上传前校验
   const beforeUpload = (file: RcFile) => {
@@ -207,6 +228,13 @@ const PublishNote: React.FC = () => {
   // 手动触发表单提交
   const triggerSubmit = () => {
     form.submit();
+  };
+
+  // 选择热门标签
+  const handleSelectHotTag = (tag: string) => {
+    if (!tags.includes(tag) && tags.length < 5) {
+      setTags([...tags, tag]);
+    }
   };
 
   // 提交笔记
@@ -310,7 +338,7 @@ const PublishNote: React.FC = () => {
           </Form.Item>
           
           {/* 标签输入 */}
-          <Form.Item label="标签">
+          <Form.Item label="">
             <div className="tags-container">
               {tags.map((tag, index) => (
                 <Tag
@@ -323,7 +351,7 @@ const PublishNote: React.FC = () => {
                 </Tag>
               ))}
               
-              {inputTagVisible ? (
+              {inputTagVisible && tags.length < 5 ? (
                 <Input
                   type="text"
                   size="small"
@@ -336,15 +364,34 @@ const PublishNote: React.FC = () => {
                   maxLength={20}
                 />
               ) : (
-                <Tag 
-                  className="add-tag-button" 
-                  onClick={showTagInput}
-                  style={{ borderStyle: 'dashed' }}
-                >
-                  <PlusOutlined /> 添加标签
-                </Tag>
+                tags.length < 5 
               )}
             </div>
+            
+            {/* 热门标签选择区域 */}
+            <div className="hot-tags-section">
+              <div className="hot-tags-title">
+                <FireOutlined style={{ color: '#ff4d4f' }} /> 热门标签:
+              </div>
+              <div className="hot-tags-list">
+                {hotTagsLoading ? (
+                  <Spin size="small" />
+                ) : (
+                  hotTags.map((tag, index) => (
+                    <Tag
+                      key={index}
+                      color="blue"
+                      style={{ cursor: 'pointer', margin: '4px' }}
+                      onClick={() => handleSelectHotTag(tag)}
+                      icon={<TagOutlined />}
+                    >
+                      {tag}
+                    </Tag>
+                  ))
+                )}
+              </div>
+            </div>
+            
             <div className="tags-hint">最多添加5个标签，每个标签不超过20个字符</div>
           </Form.Item>
           
