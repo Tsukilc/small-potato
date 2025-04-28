@@ -97,11 +97,11 @@ const MainLayout: React.FC = () => {
                 //   icon: <StarOutlined />,
                 //   label: '我的收藏'
                 // },
-                {
-                  key: '/settings',
-                  icon: <SettingOutlined />,
-                  label: '设置'
-                },
+                // {
+                //   key: '/settings',
+                //   icon: <SettingOutlined />,
+                //   label: '设置'
+                // },
               ] : [])
             ]}
           />
